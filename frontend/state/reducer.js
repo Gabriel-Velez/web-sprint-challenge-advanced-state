@@ -24,7 +24,12 @@ function selectedAnswer(state = initialSelectedAnswerState, action) {
 
 const initialMessageState = "";
 function infoMessage(state = initialMessageState, action) {
-  return state;
+  switch (action.type) {
+    case types.SET_INFO_MESSAGE:
+      return action.payload;
+    default:
+      return state;
+  }
 }
 
 const initialFormState = {
@@ -32,6 +37,7 @@ const initialFormState = {
   newTrueAnswer: "",
   newFalseAnswer: "",
 };
+
 function form(state = initialFormState, action) {
   return state;
 }

@@ -3,52 +3,15 @@ import { connect } from "react-redux";
 import * as actions from "../state/action-creators";
 
 function Quiz(props) {
-  const { quiz, fetchQuiz, postAnswer } = props;
+  const { quiz, fetchQuiz, postQuiz } = props;
 
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [selectAnswerState, setSelectedAnswerState] = useState(null);
 
   useEffect(() => {
     fetchQuiz();
   }, []);
 
-  const submitQuiz = () => {
-    setSubmitDisabled(true);
-    const answers = document.querySelectorAll("#quizAnswers .answer");
-    const selectedAnswer = document.querySelector("#quizAnswers .selected");
-    answers.forEach((answer) => {
-      answer.classList.remove("selected");
-      answer.lastChild.innerHTML = "Select";
-    });
-
-    let trueAnswer;
-    let falseAnswer;
-
-    // if (answers[0] === selectedAnswer) {
-    //   trueAnswer = "yes";
-    //   falseAnswer = "nah";
-    // } else {
-    //   trueAnswer = "nah";
-    //   falseAnswer = "yes";
-    // }
-
-    // const sentAnswer = {
-    //   question_text: quiz.question,
-    //   true_answer_text: trueAnswer,
-    //   false_answer_text: falseAnswer,
-    // };
-
-    let sentAnswer;
-    // if (answers[0] === selectedAnswer) {
-    sentAnswer = { question_text: "Love JS?", true_answer_text: "yes", false_answer_text: "nah" };
-    // } else {
-    //   trueAnswer = "nah";
-    //   falseAnswer = "yes";
-    // }
-
-    console.table(sentAnswer);
-    console.log(sentAnswer);
-    postAnswer(sentAnswer);
-  };
   const selectAnswer = (idx) => {
     const answers = document.querySelectorAll("#quizAnswers .answer");
     answers.forEach((answer) => {
@@ -58,10 +21,27 @@ function Quiz(props) {
     answers[idx].classList.add("selected");
     answers[idx].lastChild.innerHTML = "SELECTED";
     setSubmitDisabled(false);
+    setSelectedAnswerState(quiz.answers[idx].answer_id);
   };
 
+  const submitQuiz = () => {
+    setSubmitDisabled(true);
+    const answers = document.querySelectorAll("#quizAnswers .answer");
+    answers.forEach((answer) => {
+      answer.classList.remove("selected");
+      answer.lastChild.innerHTML = "Select";
+    });
+    let sentAnswer;
+    sentAnswer = { quiz_id: quiz.quiz_id, answer_id: selectAnswerState };
+    console.table(sentAnswer);
+    postQuiz(sentAnswer);
+    console.log("before ", quiz);
+    fetchQuiz();
+    console.log("after ", quiz);
+  };
   return (
     <div id='wrapper'>
+      {console.log(quiz)}
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
         quiz ? (

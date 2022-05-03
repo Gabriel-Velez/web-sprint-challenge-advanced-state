@@ -26,13 +26,13 @@ export function fetchQuiz() {
     axios
       .get("http://localhost:9000/api/quiz/next")
       .then((res) => {
-        console.log(res.data);
         dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: res.data });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error({ err }));
   };
 }
 export function postAnswer(answer) {
+  console.log(answer);
   return function (dispatch) {
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
@@ -40,18 +40,30 @@ export function postAnswer(answer) {
     // - Dispatch the fetching of the next quiz
 
     axios
-      .post("http://localhost:9000/api/quiz/new", { answer: answer })
+      .post("http://localhost:9000/api/quiz/new", answer)
       .then((res) => {
+        console.log(answer);
         dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: res.data });
+        dispatch({
+          type: types.SET_INFO_MESSAGE,
+          payload: `Congrats: "${answer.question_text}" is a great question!`,
+        });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error({ err }));
   };
 }
-export function postQuiz() {
+export function postQuiz(answer) {
   return function (dispatch) {
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
+    axios
+      .post("http://localhost:9000/api/quiz/answer", answer)
+      .then((res) => {
+        console.log(res);
+        dispatch({ type: types.SET_INFO_MESSAGE, payload: res.data });
+      })
+      .catch((err) => console.error({ err }));
   };
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
