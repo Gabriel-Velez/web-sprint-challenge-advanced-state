@@ -4,9 +4,17 @@ import * as types from "./action-types";
 
 const initialWheelState = 0;
 function wheel(state = initialWheelState, action) {
-  return state;
-}
+  switch (action.type) {
+    case types.MOVE_CLOCKWISE:
+      return state === 5 ? 0 : state + 1;
 
+    case types.MOVE_COUNTERCLOCKWISE:
+      return state === 0 ? 5 : state - 1;
+
+    default:
+      return state;
+  }
+}
 const initialQuizState = null;
 function quiz(state = initialQuizState, action) {
   switch (action.type) {
@@ -19,9 +27,12 @@ function quiz(state = initialQuizState, action) {
 
 const initialSelectedAnswerState = null;
 function selectedAnswer(state = initialSelectedAnswerState, action) {
+  switch (action.type) {
+    case types.SET_SELECTED_ANSWER:
+      return action.payload;
+  }
   return state;
 }
-
 const initialMessageState = "";
 function infoMessage(state = initialMessageState, action) {
   switch (action.type) {
@@ -39,7 +50,15 @@ const initialFormState = {
 };
 
 function form(state = initialFormState, action) {
-  return state;
-}
+  switch (action.type) {
+    case types.RESET_FORM:
+      return initialFormState;
 
+    case types.INPUT_CHANGE:
+      return action.payload;
+
+    default:
+      return state;
+  }
+}
 export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form });

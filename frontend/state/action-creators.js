@@ -2,19 +2,36 @@ import * as types from "./action-types";
 import axios from "axios";
 
 // ❗ You don't need to add extra action creators to achieve MVP
-export function moveClockwise() {}
+export function moveClockwise(value) {
+  return { type: types.MOVE_CLOCKWISE, payload: value };
+}
 
-export function moveCounterClockwise() {}
+export function moveCounterClockwise(value) {
+  return { type: types.MOVE_COUNTERCLOCKWISE, payload: value };
+}
 
-export function selectAnswer() {}
+export function selectAnswer(answer_id) {
+  return { type: types.SET_SELECTED_ANSWER, payload: answer_id };
+}
 
-export function setMessage() {}
+export function setMessage(message) {
+  return { type: types.SET_INFO_MESSAGE, payload: message };
+}
 
-export function setQuiz() {}
+export function setQuiz(question) {
+  return { type: types.SET_QUIZ_INTO_STATE, payload: question };
+}
 
-export function inputChange() {}
+export function inputChange(value) {
+  return { type: types.INPUT_CHANGE, payload: value };
+}
 
-export function resetForm() {}
+export function resetForm() {
+  return {
+    type: types.RESET_FORM,
+    payload: { newQuestion: "", newTrueAnswer: "", newFalseAnswer: "" },
+  };
+}
 
 // ❗ Async action creators
 export function fetchQuiz() {
@@ -42,7 +59,7 @@ export function postAnswer(answer) {
     axios
       .post("http://localhost:9000/api/quiz/new", answer)
       .then((res) => {
-        console.log(answer);
+        console.log(res);
         dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: res.data });
         dispatch({
           type: types.SET_INFO_MESSAGE,

@@ -1,53 +1,44 @@
 import React from "react";
+import * as actionCreators from "../state/action-creators";
 
-export default function Wheel(props) {
-  const turnWheel = (direction) => {
-    const cogs = document.querySelectorAll("#wheel .cog");
-    const activeCog = document.querySelector("#wheel .cog.active");
-    let properElement;
-    switch (direction) {
-      case "clock":
-        if (activeCog.nextElementSibling) {
-          properElement = activeCog.nextElementSibling;
-        } else {
-          properElement = cogs[0];
-        }
-        break;
-      case "counter":
-        if (activeCog.previousElementSibling) {
-          properElement = activeCog.previousElementSibling;
-        } else {
-          properElement = cogs[cogs.length - 1];
-        }
-        break;
-    }
-    properElement.classList.add("active");
-    activeCog.classList.remove("active");
-    properElement.innerHTML = activeCog.innerHTML;
-    activeCog.innerHTML = "";
-  };
+import { connect } from "react-redux";
+
+function Wheel(props) {
+  const { moveCounterClockwise, moveClockwise } = props;
 
   return (
     <div id='wrapper'>
       <div id='wheel'>
-        <div className='cog active' style={{ "--i": 0 }}>
-          B
-        </div>
-        <div className='cog' style={{ "--i": 1 }}></div>
-        <div className='cog' style={{ "--i": 2 }}></div>
-        <div className='cog' style={{ "--i": 3 }}></div>
-        <div className='cog' style={{ "--i": 4 }}></div>
-        <div className='cog' style={{ "--i": 5 }}></div>
+        <div className={`cog ${props.wheel === 0 ? "active" : ""}`} style={{ "--i": 0 }}>{`${
+          props.wheel === 0 ? "B" : ""
+        }`}</div>
+        <div className={`cog ${props.wheel === 1 ? "active" : ""}`} style={{ "--i": 1 }}>{`${
+          props.wheel === 1 ? "B" : ""
+        }`}</div>
+        <div className={`cog ${props.wheel === 2 ? "active" : ""}`} style={{ "--i": 2 }}>{`${
+          props.wheel === 2 ? "B" : ""
+        }`}</div>
+        <div className={`cog ${props.wheel === 3 ? "active" : ""}`} style={{ "--i": 3 }}>{`${
+          props.wheel === 3 ? "B" : ""
+        }`}</div>
+        <div className={`cog ${props.wheel === 4 ? "active" : ""}`} style={{ "--i": 4 }}>{`${
+          props.wheel === 4 ? "B" : ""
+        }`}</div>
+        <div className={`cog ${props.wheel === 5 ? "active" : ""}`} style={{ "--i": 5 }}>{`${
+          props.wheel === 5 ? "B" : ""
+        }`}</div>
         {/* --i is a custom CSS property, no need to touch that nor the style object */}
       </div>
       <div id='keypad'>
-        <button id='counterClockwiseBtn' onClick={() => turnWheel("counter")}>
+        <button id='counterClockwiseBtn' onClick={moveCounterClockwise}>
           Counter clockwise
         </button>
-        <button id='clockwiseBtn' onClick={() => turnWheel("clock")}>
+        <button id='clockwiseBtn' onClick={moveClockwise}>
           Clockwise
         </button>
       </div>
     </div>
   );
 }
+
+export default connect((st) => st, actionCreators)(Wheel);

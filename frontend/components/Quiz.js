@@ -9,7 +9,7 @@ function Quiz(props) {
   const [selectAnswerState, setSelectedAnswerState] = useState(null);
 
   useEffect(() => {
-    fetchQuiz();
+    if (quiz === null) fetchQuiz();
   }, []);
 
   const selectAnswer = (idx) => {
