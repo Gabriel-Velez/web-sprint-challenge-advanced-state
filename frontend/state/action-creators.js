@@ -61,7 +61,7 @@ export function postQuiz(answer) {
       .post("http://localhost:9000/api/quiz/answer", answer)
       .then((res) => {
         console.log(res);
-        dispatch({ type: types.SET_INFO_MESSAGE, payload: res.data });
+        dispatch({ type: types.SET_INFO_MESSAGE, payload: res.data.message });
       })
       .catch((err) => console.error({ err }));
   };
