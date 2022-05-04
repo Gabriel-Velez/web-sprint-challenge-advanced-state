@@ -4,7 +4,7 @@ import * as actionCreators from "../state/action-creators";
 const initialFormValues = { newQuestion: "", newTrueAnswer: "", newFalseAnswer: "" };
 
 export function Form(props) {
-  const { postAnswer, resetForm, form } = props;
+  const { postQuiz, resetForm, form } = props;
   const [values, setValues] = useState(initialFormValues);
   const [disabled, setDisabled] = useState(true);
 
@@ -26,7 +26,7 @@ export function Form(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-    postAnswer({
+    postQuiz({
       question_text: form.newQuestion,
       true_answer_text: form.newTrueAnswer,
       false_answer_text: form.newFalseAnswer,

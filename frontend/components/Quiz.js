@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as actions from "../state/action-creators";
 
 function Quiz(props) {
-  const { quiz, fetchQuiz, postQuiz } = props;
+  const { quiz, fetchQuiz, postAnswer } = props;
 
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [selectAnswerState, setSelectedAnswerState] = useState(null);
@@ -34,10 +34,8 @@ function Quiz(props) {
     let sentAnswer;
     sentAnswer = { quiz_id: quiz.quiz_id, answer_id: selectAnswerState };
     console.table(sentAnswer);
-    postQuiz(sentAnswer);
-    console.log("before ", quiz);
-    fetchQuiz();
-    console.log("after ", quiz);
+    postAnswer(sentAnswer);
+    // fetchQuiz();
   };
   return (
     <div id='wrapper'>

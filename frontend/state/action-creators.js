@@ -57,14 +57,16 @@ export function postAnswer(answer) {
     // - Dispatch the fetching of the next quiz
 
     axios
-      .post("http://localhost:9000/api/quiz/new", answer)
+      .post("http://localhost:9000/api/quiz/answer", answer)
       .then((res) => {
         console.log(res);
-        dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: res.data });
-        dispatch({
-          type: types.SET_INFO_MESSAGE,
-          payload: `Congrats: "${answer.question_text}" is a great question!`,
-        });
+        dispatch({ type: types.SET_INFO_MESSAGE, payload: res.data.message });
+        axios
+          .get("http://localhost:9000/api/quiz/next")
+          .then((resNext) => {
+            dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: resNext.data });
+          })
+          .catch((errNext) => console.error({ errNext }));
       })
       .catch((err) => console.error({ err }));
   };
@@ -75,10 +77,14 @@ export function postQuiz(answer) {
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
     axios
-      .post("http://localhost:9000/api/quiz/answer", answer)
+      .post("http://localhost:9000/api/quiz/new", answer)
       .then((res) => {
         console.log(res);
-        dispatch({ type: types.SET_INFO_MESSAGE, payload: res.data.message });
+        dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: res.data });
+        dispatch({
+          type: types.SET_INFO_MESSAGE,
+          payload: `Congrats: "${answer.question_text}" is a great question!`,
+        });
       })
       .catch((err) => console.error({ err }));
   };
