@@ -80,7 +80,7 @@ export function postQuiz(answer) {
       .post("http://localhost:9000/api/quiz/new", answer)
       .then((res) => {
         console.log(res);
-        dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: res.data });
+        // dispatch({ type: types.SET_QUIZ_INTO_STATE, payload: res.data });
         dispatch({
           type: types.SET_INFO_MESSAGE,
           payload: `Congrats: "${answer.question_text}" is a great question!`,
